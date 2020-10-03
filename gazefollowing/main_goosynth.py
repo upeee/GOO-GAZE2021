@@ -1,0 +1,97 @@
+import torch
+from torch.utils.data import Dataset, DataLoader
+from torchvision import transforms
+from torch.autograd import Variable
+import torch.optim as optim
+import torch.nn as nn
+import torch.nn.functional as F
+from torch.nn import DataParallel
+
+import time
+import os
+import numpy as np
+import json
+import cv2
+from PIL import Image, ImageOps
+import random
+from tqdm import tqdm
+import operator
+import itertools
+from scipy.io import  loadmat
+import logging
+from scipy import signal
+
+from utils import data_transforms
+from utils import get_paste_kernel, kernel_map
+from utils_logging import setup_logger
+
+
+from models.gazenet import GazeNet
+from models.__init__ import save_checkpoint, resume_checkpoint
+from dataloading import GooDataset
+from training.train_gazenet import train, test
+from training.train_gazenet import StagedOptimizer
+
+logger = setup_logger(name='first_logger', 
+                      log_dir ='./logs/',
+                      log_file='train.log',
+                      log_format = '%(asctime)s %(levelname)s %(message)s',
+                      verbose=True)
+
+def main():
+
+    # Load Datasets, Initialize DataLoaders
+    batch_size = 32
+
+    train_set = GooDataset(root_dir='/hdd/HENRI/goosynth/1person/GazeDatasets/',
+                            mat_file='/hdd/HENRI/goosynth/picklefiles/trainpickle2to19human.pickle',
+                            training='train')
+    train_data_loader = DataLoader(train_set, batch_size=batch_size,
+                                   shuffle=True, num_workers=16)
+
+    test_set = GooDataset(root_dir='/hdd/HENRI/goosynth/test/',
+                        mat_file='/hdd/HENRI/goosynth/picklefiles/testpickle120.pickle',
+                        training='test')
+    test_data_loader = DataLoader(test_set, batch_size=batch_size//2,
+                                shuffle=False, num_workers=8)
+
+    #Initialized Models
+    net = GazeNet()
+    net = DataParallel(net)
+    net.cuda()
+
+    #Configs
+    start_epoch = 0
+    method = 'Adam'
+    learning_rate = 0.0001
+    max_epoch = 25
+
+    #Initialize StagedOptimizer (GazeNet only)
+    staged_opt = StagedOptimizer(net, learning_rate)
+
+    #Is training resumed from previous run?
+    resume_training = True
+    resume_path = './saved_models/temp/model_epoch25.pth.tar'
+    if resume_training :
+        net, optimizer = resume_checkpoint(net, optimizer=None, resume_path=resume_path)
+        test(net, test_data_loader,logger)
+        start_epoch = 25
+
+    for epoch in range(start_epoch, max_epoch):
+        
+        # Update optimizer
+        optimizer = staged_opt.update(epoch)
+
+        # Train model
+        train(net, train_data_loader, optimizer, epoch, logger)
+
+        # Save model and optimizer
+        if epoch > max_epoch-5:
+            save_path = './saved_models/temp/'
+            save_checkpoint(net, optimizer, epoch+1, save_path)
+        
+        # Evaluate model
+        test(net, test_data_loader, logger)
+
+if __name__ == "__main__":
+    main()
