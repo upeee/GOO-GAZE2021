@@ -2,3 +2,8 @@
 */saved_models/*
 */.ipynb_checkpoints/*
 */__pycache__/*
+
+__pycache__/
+
+*.pth
+*

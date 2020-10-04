@@ -4,11 +4,11 @@ import torchvision.models as models
 import torch.nn.functional as F
 
 class AlexSal(nn.Module):
-    def __init__(self, opt):
+    def __init__(self, placesmodel_path):
         super(AlexSal, self).__init__()
 
         self.features = nn.Sequential(
-            *list(torch.load(opt.placesmodelpath).features.children())[:-2]
+            *list(torch.load(placesmodel_path).features.children())[:-2]
         )
         self.relu = nn.ReLU()
         self.sigmoid = nn.Sigmoid()
@@ -21,7 +21,7 @@ class AlexSal(nn.Module):
         return x
 
 class AlexGaze(nn.Module):
-    def __init__(self, opt):
+    def __init__(self):
         super(AlexGaze, self).__init__()
         self.features = nn.Sequential(
             *list(models.alexnet(pretrained=True).features.children())
@@ -55,12 +55,11 @@ class AlexGaze(nn.Module):
         return x
 
 
-class Net(nn.Module):
-    def __init__(self, opt):
-        super(Net, self).__init__()
-        self.salpath = AlexSal(opt)
-        self.gazepath = AlexGaze(opt)
-        self.opt = opt
+class GazeNet(nn.Module):
+    def __init__(self, placesmodel_path):
+        super(GazeNet, self).__init__()
+        self.salpath = AlexSal(placesmodel_path)
+        self.gazepath = AlexGaze()
 
         self.smax = nn.LogSoftmax(dim=1)
         self.nolog_smax = nn.Softmax(dim=1)

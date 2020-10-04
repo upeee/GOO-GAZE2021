@@ -69,7 +69,7 @@ def main():
     staged_opt = StagedOptimizer(net, learning_rate)
 
     #Is training resumed from previous run?
-    resume_training = True
+    resume_training = False
     resume_path = './saved_models/temp/model_epoch25.pth.tar'
     if resume_training :
         net, optimizer = resume_checkpoint(net, optimizer=None, resume_path=resume_path)
