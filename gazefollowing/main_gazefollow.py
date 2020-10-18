@@ -40,18 +40,27 @@ logger = setup_logger(name='first_logger',
 def main():
 
     # Load Datasets, Initialize DataLoaders
-    batch_size = 32
-    train_set = GazeDataset(root_dir='/home/eee198/Documents/datasets/GazeFollowData/',
-                            mat_file='/home/eee198/Documents/datasets/GazeFollowData/train_annotations.mat',
+    batch_size = args.batch_size
+
+    # root_dir = '/home/eee198/Documents/datasets/GazeFollowData/',
+    # mat_file = '/home/eee198/Documents/datasets/GazeFollowData/train_annotations.mat',
+
+    train_set = GazeDataset(root_dir=args.train_root_dir,
+                            mat_file=args.train_mat_file,
                             training='train')
     train_data_loader = DataLoader(train_set, batch_size=batch_size,
                                 shuffle=True, num_workers=16)
 
-    test_set = GazeDataset(root_dir='/home/eee198/Documents/datasets/GazeFollowData/',
-                        mat_file='/home/eee198/Documents/datasets/GazeFollowData/test_annotations.mat',
-                        training='test')
-    test_data_loader = DataLoader(test_set, batch_size=batch_size//2,
-                                shuffle=False, num_workers=8)
+    # root_dir = '/home/eee198/Documents/datasets/GazeFollowData/',
+    # mat_file = '/home/eee198/Documents/datasets/GazeFollowData/test_annotations.mat',
+
+
+    if args.test_root_dir is not None:
+        test_set = GazeDataset(root_dir=args.test_root_dir,
+                                    mat_file=args.test_mat_file,
+                                    training='test')
+        test_data_loader = DataLoader(test_set, batch_size=batch_size//2,
+                                    shuffle=False, num_workers=8)
 
     #Initialized Models
     net = GazeNet()
@@ -68,12 +77,12 @@ def main():
     staged_opt = GazeOptimizer(net, learning_rate)
 
     #Is training resumed from previous run?
-    resume_training = False
-    resume_path = './saved_models/temp/model_epoch25.pth.tar'
+    resume_training = args.resume_training
+    resume_path = args.resume_path #'./saved_models/temp/model_epoch25.pth.tar'
     if resume_training :
         net, optimizer = resume_checkpoint(net, optimizer=None, resume_path=resume_path)
         test(net, test_data_loader,logger)
-        start_epoch = 25
+        start_epoch = args.resume_epoch
 
     for epoch in range(start_epoch, max_epoch):
         
@@ -89,7 +98,13 @@ def main():
             save_checkpoint(net, optimizer, epoch+1, save_path)
         
         # Evaluate model
+<<<<<<< HEAD
         test(net, test_data_loader, logger)
+=======
+        if args.test_root_dir is not None:
+            with torch.no_grad():
+                test(net, test_data_loader, logger)
+>>>>>>> e378c8e445ed2f836d74ca730b5dc4d3eca46762
 
 if __name__ == "__main__":
     main()
