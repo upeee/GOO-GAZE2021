@@ -1,4 +1,4 @@
-import torch
+# import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 from torch.autograd import Variable
@@ -38,22 +38,33 @@ logger = setup_logger(name='first_logger',
                       log_format = '%(asctime)s %(levelname)s %(message)s',
                       verbose=True)
 
+from parse_inputs import parse_inputs as parse_inputs
+
 def main():
+    # Parse command line input arguments
+    args = parse_inputs()
 
     # Load Datasets, Initialize DataLoaders
-    batch_size = 32
+    batch_size = args.batch_size
 
-    train_set = GooDataset(root_dir='/hdd/HENRI/goosynth/1person/GazeDatasets/',
-                            mat_file='/hdd/HENRI/goosynth/picklefiles/trainpickle2to19human.pickle',
+    # root_dir='/hdd/HENRI/goosynth/1person/GazeDatasets/'
+    # mat_file='/hdd/HENRI/goosynth/picklefiles/trainpickle2to19human.pickle',
+
+    train_set = GooDataset(root_dir=args.train_root_dir,
+                            mat_file=args.train_mat_file,
                             training='train')
     train_data_loader = DataLoader(train_set, batch_size=batch_size,
                                    shuffle=True, num_workers=16)
 
-    test_set = GooDataset(root_dir='/hdd/HENRI/goosynth/test/',
-                        mat_file='/hdd/HENRI/goosynth/picklefiles/testpickle120.pickle',
-                        training='test')
-    test_data_loader = DataLoader(test_set, batch_size=batch_size//2,
-                                shuffle=False, num_workers=8)
+    # root_dir = '/hdd/HENRI/goosynth/test/',
+    # mat_file = '/hdd/HENRI/goosynth/picklefiles/testpickle120.pickle',
+
+    if args.test_root_dir is not None:
+        test_set = GooDataset(root_dir=args.test_root_dir,
+                                mat_file=args.test_mat_file,
+                                training='test')
+        test_data_loader = DataLoader(test_set, batch_size=batch_size//2,
+                                    shuffle=False, num_workers=8)
 
     #Initialized Models
     net = GazeNet()
@@ -70,8 +81,8 @@ def main():
     staged_opt = StagedOptimizer(net, learning_rate)
 
     #Is training resumed from previous run?
-    resume_training = True
-    resume_path = './saved_models/temp/model_epoch25.pth.tar'
+    resume_training = args.resume_training
+    resume_path = args.resume_path #'./saved_models/temp/model_epoch25.pth.tar'
     if resume_training :
         net, optimizer = resume_checkpoint(net, optimizer=None, resume_path=resume_path)
         test(net, test_data_loader,logger)
@@ -89,9 +100,10 @@ def main():
         if epoch > max_epoch-5:
             save_path = './saved_models/temp/'
             save_checkpoint(net, optimizer, epoch+1, save_path)
-        
-        # Evaluate model
-        test(net, test_data_loader, logger)
+
+        if args.test_root_dir is not None:
+            # Evaluate model
+            test(net, test_data_loader, logger)
 
 if __name__ == "__main__":
     main()
