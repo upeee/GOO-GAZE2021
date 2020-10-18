@@ -16,7 +16,7 @@ def F_loss(direction, predict_heatmap, eye_position, gt_position, gt_heatmap):
 
     return heatmap_loss, middle_angle_loss
 
-class StagedOptimizer():
+class GazeOptimizer():
 
     def __init__(self, net, initial_lr):
 
@@ -42,7 +42,7 @@ class StagedOptimizer():
 
         self.optimizer = self.optimizer_s1
 
-    def update(self, epoch):
+    def getOptimizer(self, epoch):
 
         if epoch < 7:
             lr_scheduler = self.lr_scheduler_s1
@@ -55,10 +55,6 @@ class StagedOptimizer():
             self.optimizer = self.optimizer_s3
 
         lr_scheduler.step()
-        
-        return self.optimizer
-
-    def get_optimizer(self):
         
         return self.optimizer
 
@@ -103,66 +99,67 @@ def test(net, test_data_loader, logger):
     info_list = []
     heatmaps = []
 
-    for data in tqdm(test_data_loader, total=len(test_data_loader)):
-        image, face_image, gaze_field, eye_position, gt_position, gt_heatmap = \
-            data['image'], data['face_image'], data['gaze_field'], data['eye_position'], data['gt_position'], data['gt_heatmap']
-        image, face_image, gaze_field, eye_position, gt_position, gt_heatmap = \
-            map(lambda x: Variable(x.cuda()), [image, face_image, gaze_field, eye_position, gt_position, gt_heatmap])
+    with torch.no_grad():
+        for data in tqdm(test_data_loader, total=len(test_data_loader)):
+            image, face_image, gaze_field, eye_position, gt_position, gt_heatmap = \
+                data['image'], data['face_image'], data['gaze_field'], data['eye_position'], data['gt_position'], data['gt_heatmap']
+            image, face_image, gaze_field, eye_position, gt_position, gt_heatmap = \
+                map(lambda x: Variable(x.cuda()), [image, face_image, gaze_field, eye_position, gt_position, gt_heatmap])
 
-        #print(image.shape)
-        #print(face_image.shape)
-        #print(eye_position.shape)
-        direction, predict_heatmap = net([image, face_image, gaze_field, eye_position])
-        #print("Direction shape: ", direction.shape)
-        #print("Heatmap shape: ", predict_heatmap.shape)
+            #print(image.shape)
+            #print(face_image.shape)
+            #print(eye_position.shape)
+            direction, predict_heatmap = net([image, face_image, gaze_field, eye_position])
+            #print("Direction shape: ", direction.shape)
+            #print("Heatmap shape: ", predict_heatmap.shape)
 
-        heatmap_loss, m_angle_loss = \
-            F_loss(direction, predict_heatmap, eye_position, gt_position, gt_heatmap)
+            heatmap_loss, m_angle_loss = \
+                F_loss(direction, predict_heatmap, eye_position, gt_position, gt_heatmap)
 
-        loss = heatmap_loss + m_angle_loss
-
-
-        total_loss.append([heatmap_loss.item(),
-                          m_angle_loss.item(), loss.item()])
-        logger.info('loss: %.5lf, %.5lf, %.5lf'%( \
-              heatmap_loss.item(), m_angle_loss.item(), loss.item()))
-
-        middle_output = direction.cpu().data.numpy()
-        final_output = predict_heatmap.cpu().data.numpy()
-        target = gt_position.cpu().data.numpy()
-        eye_position = eye_position.cpu().data.numpy()
-        for m_direction, f_point, gt_point, eye_point in \
-            zip(middle_output, final_output, target, eye_position):
-            f_point = f_point.reshape([224 // 4, 224 // 4])
-            heatmaps.append(f_point)
-
-            h_index, w_index = np.unravel_index(f_point.argmax(), f_point.shape)
-            f_point = np.array([w_index / 56., h_index / 56.])
-
-            f_error = f_point - gt_point
-            f_dist = np.sqrt(f_error[0] ** 2 + f_error[1] ** 2)
-
-            # angle
-            f_direction = f_point - eye_point
-            gt_direction = gt_point - eye_point
-
-            norm_m = (m_direction[0] **2 + m_direction[1] ** 2 ) ** 0.5
-            norm_f = (f_direction[0] **2 + f_direction[1] ** 2 ) ** 0.5
-            norm_gt = (gt_direction[0] **2 + gt_direction[1] ** 2 ) ** 0.5
-
-            m_cos_sim = (m_direction[0]*gt_direction[0] + m_direction[1]*gt_direction[1]) / \
-                        (norm_gt * norm_m + 1e-6)
-            m_cos_sim = np.maximum(np.minimum(m_cos_sim, 1.0), -1.0)
-            m_angle = np.arccos(m_cos_sim) * 180 / np.pi
-
-            f_cos_sim = (f_direction[0]*gt_direction[0] + f_direction[1]*gt_direction[1]) / \
-                        (norm_gt * norm_f + 1e-6)
-            f_cos_sim = np.maximum(np.minimum(f_cos_sim, 1.0), -1.0)
-            f_angle = np.arccos(f_cos_sim) * 180 / np.pi
+            loss = heatmap_loss + m_angle_loss
 
 
-            total_error.append([f_dist, m_angle, f_angle])
-            info_list.append(list(f_point))
+            total_loss.append([heatmap_loss.item(),
+                            m_angle_loss.item(), loss.item()])
+            logger.info('loss: %.5lf, %.5lf, %.5lf'%( \
+                heatmap_loss.item(), m_angle_loss.item(), loss.item()))
+
+            middle_output = direction.cpu().data.numpy()
+            final_output = predict_heatmap.cpu().data.numpy()
+            target = gt_position.cpu().data.numpy()
+            eye_position = eye_position.cpu().data.numpy()
+            for m_direction, f_point, gt_point, eye_point in \
+                zip(middle_output, final_output, target, eye_position):
+                f_point = f_point.reshape([224 // 4, 224 // 4])
+                heatmaps.append(f_point)
+
+                h_index, w_index = np.unravel_index(f_point.argmax(), f_point.shape)
+                f_point = np.array([w_index / 56., h_index / 56.])
+
+                f_error = f_point - gt_point
+                f_dist = np.sqrt(f_error[0] ** 2 + f_error[1] ** 2)
+
+                # angle
+                f_direction = f_point - eye_point
+                gt_direction = gt_point - eye_point
+
+                norm_m = (m_direction[0] **2 + m_direction[1] ** 2 ) ** 0.5
+                norm_f = (f_direction[0] **2 + f_direction[1] ** 2 ) ** 0.5
+                norm_gt = (gt_direction[0] **2 + gt_direction[1] ** 2 ) ** 0.5
+
+                m_cos_sim = (m_direction[0]*gt_direction[0] + m_direction[1]*gt_direction[1]) / \
+                            (norm_gt * norm_m + 1e-6)
+                m_cos_sim = np.maximum(np.minimum(m_cos_sim, 1.0), -1.0)
+                m_angle = np.arccos(m_cos_sim) * 180 / np.pi
+
+                f_cos_sim = (f_direction[0]*gt_direction[0] + f_direction[1]*gt_direction[1]) / \
+                            (norm_gt * norm_f + 1e-6)
+                f_cos_sim = np.maximum(np.minimum(f_cos_sim, 1.0), -1.0)
+                f_angle = np.arccos(f_cos_sim) * 180 / np.pi
+
+
+                total_error.append([f_dist, m_angle, f_angle])
+                info_list.append(list(f_point))
     info_list = np.array(info_list)
     #np.savez('multi_scale_concat_prediction.npz', info_list=info_list)
 

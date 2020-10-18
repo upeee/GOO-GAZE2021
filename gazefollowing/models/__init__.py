@@ -7,7 +7,7 @@ import os
 def save_checkpoint(model, optimizer, epoch, save_path, modelIdx=-1):
 
     state = {
-        'epoch': epoch + 1,
+        'epoch': epoch,
         'state_dict': model.state_dict(),
         'optimizer' : optimizer.state_dict(),
     }
@@ -37,4 +37,4 @@ def resume_checkpoint(model, optimizer, resume_path):
 
         print("=> loaded checkpoint '{}' (epoch {})".format(resume_path, checkpoint['epoch']))
 
-        return model, optimizer
+        return model, optimizer, checkpoint['epoch']

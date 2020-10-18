@@ -1,4 +1,8 @@
 import torch
+import torch.optim as optim
+import torch.nn as nn
+import torch.nn.functional as F
+
 import time
 import models.__init__ as init
 import utils
@@ -73,32 +77,89 @@ def calc_ang_err(output, target, eyes):
 
     return total
 
+#Loss function used is cross entropy
+criterion = nn.NLLLoss().cuda()
+
+def train(net, train_dataloader, optimizer, epoch, logger):
+    net.train()
+    
+    running_loss = []
+    for i, data in tqdm(enumerate(train_dataloader), total=len(train_dataloader)):
+
+        optimizer.zero_grad()
+
+        xh, xi, xp, shifted_targets, eyes, names, eyes2, gcorrs = data
+
+        xh = xh.cuda()
+        xi = xi.cuda()
+        xp = xp.cuda()
+        shifted_targets = shifted_targets.cuda().squeeze()
+
+        outputs = net(xh, xi, xp)
+        total_loss = criterion(outputs[0], shifted_targets[:, 0, :].max(1)[1])
+        for j in range(1, len(outputs)):
+            total_loss += criterion(outputs[j], shifted_targets[:, j, :].max(1)[1])
+
+        total_loss = total_loss / (len(outputs) * 1.0)
+
+        total_loss.backward()
+        optimizer.step()
+
+        inputs_size = xh.size(0)
+        
+        running_loss.append(total_loss.item())
+        if i % 100 == 99:
+            logger.info('%s'%(str(np.mean(running_loss))))
+            running_loss = [] 
+            
+class GazeOptimizer():
+    
+    def __init__(self, net, initial_lr, weight_decay=1e-6):
+        
+        self.INIT_LR = initial_lr
+        self.WEIGHT_DECAY = weight_decay
+        self.optimizer = optim.Adam(net.parameters(), lr=initial_lr, weight_decay=weight_decay)
+        
+    def getOptimizer(self, epoch):
+        
+        if epoch < 8:
+            lr = self.INIT_LR
+        else:
+            lr = self.INIT_LR / 10
+
+        for param_group in self.optimizer.param_groups:
+            param_group['lr'] = lr
+            param_group['weight_decay'] = self.WEIGHT_DECAY
+            
+        return self.optimizer
+
 def test(net, test_data_loader, logger):
     net.eval()
     total_error = []
     all_gt_heat = []
     all_pred_heat = []
 
-    for data in tqdm(test_data_loader, total=len(test_data_loader)):
+    with torch.no_grad():
+        for data in tqdm(test_data_loader, total=len(test_data_loader)):
 
-        xh, xi, xp, targets, eyes, names, eyes2, ground_labels = data
-        xh = xh.cuda()
-        xi = xi.cuda()
-        xp = xp.cuda()
+            xh, xi, xp, targets, eyes, names, eyes2, ground_labels = data
+            xh = xh.cuda()
+            xi = xi.cuda()
+            xp = xp.cuda()
 
-        outputs, raw_hm = net.raw_hm(xh, xi, xp)
+            outputs, raw_hm = net.raw_hm(xh, xi, xp)
 
-        pred_labels = outputs.max(1)[1] #max function returns both values and indices. so max()[0] is values, max()[1] is indices
-        inputs_size = xh.size(0)
+            pred_labels = outputs.max(1)[1] #max function returns both values and indices. so max()[0] is values, max()[1] is indices
+            inputs_size = xh.size(0)
 
-        for i in range(inputs_size):           
-            distval = euclid_dist(pred_labels.data.cpu()[i], ground_labels[i])
-            ang_error = calc_ang_err(pred_labels.data.cpu()[i], ground_labels[i], eyes.cpu()[i])
-            total_error.append([distval, ang_error])
-        #preprocess preds and gt, stack as numpy array for later auc computeation
-        #batch_pred, batch_gt = utils.AUC_preprocess(raw_hm.cpu(), ground_labels, inputs_size)
-        #all_pred_heat.append(batch_pred)
-        #all_gt_heat.append(batch_gt)
+            for i in range(inputs_size):           
+                distval = euclid_dist(pred_labels.data.cpu()[i], ground_labels[i])
+                ang_error = calc_ang_err(pred_labels.data.cpu()[i], ground_labels[i], eyes.cpu()[i])
+                total_error.append([distval, ang_error])
+            #preprocess preds and gt, stack as numpy array for later auc computeation
+            #batch_pred, batch_gt = utils.AUC_preprocess(raw_hm.cpu(), ground_labels, inputs_size)
+            #all_pred_heat.append(batch_pred)
+            #all_gt_heat.append(batch_gt)
            
     logger.info('average error: %s'%str(np.mean(np.array(total_error), axis=0)))
     return np.mean(np.array(total_error), axis=0)

@@ -25,12 +25,11 @@ from utils import data_transforms
 from utils import get_paste_kernel, kernel_map
 from utils_logging import setup_logger
 
-
 from models.gazenet import GazeNet
 from models.__init__ import save_checkpoint, resume_checkpoint
-from dataloading import GazeDataset
+from dataloader.gazenet import GazeDataset
 from training.train_gazenet import train, test
-from training.train_gazenet import StagedOptimizer
+from training.train_gazenet import GazeOptimizer
 
 logger = setup_logger(name='first_logger', 
                       log_dir ='./logs/',
@@ -65,8 +64,8 @@ def main():
     learning_rate = 0.0001
     max_epoch = 25
 
-    #Initialize StagedOptimizer (GazeNet only)
-    staged_opt = StagedOptimizer(net, learning_rate)
+    #Initialize GazeOptimizer (GazeNet only)
+    staged_opt = GazeOptimizer(net, learning_rate)
 
     #Is training resumed from previous run?
     resume_training = False
@@ -90,8 +89,7 @@ def main():
             save_checkpoint(net, optimizer, epoch+1, save_path)
         
         # Evaluate model
-        with torch.no_grad():
-            test(net, test_data_loader, logger)
+        test(net, test_data_loader, logger)
 
 if __name__ == "__main__":
     main()

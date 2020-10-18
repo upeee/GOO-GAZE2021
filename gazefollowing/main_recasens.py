@@ -25,56 +25,51 @@ from utils import data_transforms
 from utils import get_paste_kernel, kernel_map
 from utils_logging import setup_logger
 
-
-from models.gazenet import GazeNet
+from models.recasens import GazeNet
+from dataloader.recasens import GooDataset, GazeDataset
 from models.__init__ import save_checkpoint, resume_checkpoint
-from dataloader.gazenet import GooDataset
-from training.train_gazenet import train, test
-from training.train_gazenet import GazeOptimizer
+from training.train_recasens import train, test, GazeOptimizer
 
 logger = setup_logger(name='first_logger', 
                       log_dir ='./logs/',
-                      log_file='train.log',
+                      log_file='train_recasens.log',
                       log_format = '%(asctime)s %(levelname)s %(message)s',
                       verbose=True)
 
 def main():
 
-    # Load Datasets, Initialize DataLoaders
-    batch_size = 32
+    # Dataloaders for GOO
+    batch_size=32
+    workers=12
+    testbatchsize=32
 
-    train_set = GooDataset(root_dir='/hdd/HENRI/goosynth/1person/GazeDatasets/',
-                            mat_file='/hdd/HENRI/goosynth/picklefiles/trainpickle2to19human.pickle',
-                            training='train')
-    train_data_loader = DataLoader(train_set, batch_size=batch_size,
-                                   shuffle=True, num_workers=16)
+    images_dir = '/hdd/HENRI/goosynth/1person/GazeDatasets/'
+    pickle_path = '/hdd/HENRI/goosynth/picklefiles/trainpickle2to19human.pickle'
+    test_images_dir = '/hdd/HENRI/goosynth/test/'
+    test_pickle_path = '/hdd/HENRI/goosynth/picklefiles/testpickle120.pickle'
 
-    test_set = GooDataset(root_dir='/hdd/HENRI/goosynth/test/',
-                        mat_file='/hdd/HENRI/goosynth/picklefiles/testpickle120.pickle',
-                        training='test')
-    test_data_loader = DataLoader(test_set, batch_size=batch_size//2,
-                                shuffle=False, num_workers=8)
+    train_set = GooDataset(images_dir, pickle_path, 'train')
+    train_data_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size, shuffle=True, num_workers=workers)
 
-    #Initialized Models
-    net = GazeNet()
+    val_set = GooDataset(test_images_dir, test_pickle_path, 'test')
+    test_data_loader = torch.utils.data.DataLoader(val_set, batch_size=testbatchsize, num_workers=workers, shuffle=False)
+
+    # Loads model
+    net = GazeNet(placesmodel_path='./alexnet_places365.pth')
     net.cuda()
 
-    #Configs
     start_epoch = 0
-    method = 'Adam'
+    max_epoch = 5
     learning_rate = 0.0001
-    max_epoch = 25
 
-    #Initialize GazeOptimizer (GazeNet only)
-    staged_opt = GazeOptimizer(net, learning_rate)
-
-    #Is training resumed from previous run?
-    resume_training = True
-    resume_path = './saved_models/temp/model_epoch25.pth.tar'
+    resume_training = False
+    resume_path = './saved_models/temp/gazenet_gazefollow_0.1647_11epoch_0modIdx.pth.tar'
     if resume_training :
-        net, optimizer = resume_checkpoint(net, optimizer=None, resume_path=resume_path)
+        net, optimizer = resume_checkpoint(net, optimizer, resume_path)
         test(net, test_data_loader,logger)
         start_epoch = 25
+
+    staged_opt = GazeOptimizer(net, learning_rate)
 
     for epoch in range(start_epoch, max_epoch):
         
@@ -91,6 +86,7 @@ def main():
         
         # Evaluate model
         test(net, test_data_loader, logger)
+
 
 if __name__ == "__main__":
     main()

@@ -60,9 +60,9 @@ class FPN(nn.Module):
         return heatmap
 
 
-class GazeNet(nn.Module):
+class __GazeNet__(nn.Module):
     def __init__(self):
-        super(GazeNet, self).__init__()
+        super(__GazeNet__, self).__init__()
         self.face_net = M.resnet50(pretrained=True)
         self.face_process = nn.Sequential(nn.Linear(2048, 512),
                                           nn.ReLU(inplace=True))
@@ -123,4 +123,8 @@ class GazeNet(nn.Module):
         heatmap = self.fpn_net(image)
 
         return direction, heatmap
+
+def GazeNet():
+    net = __GazeNet__()
+    return nn.DataParallel(net)
 
