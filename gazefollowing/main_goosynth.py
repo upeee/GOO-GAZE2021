@@ -103,7 +103,8 @@ def main():
 
         if args.test_root_dir is not None:
             # Evaluate model
-            test(net, test_data_loader, logger)
+            with torch.no_grad():
+                test(net, test_data_loader, logger)
 
 if __name__ == "__main__":
     main()

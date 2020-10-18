@@ -23,6 +23,10 @@ def parse_inputs():
     p.add_argument('--resume_path', type=str,
                         help='load model file',
                         default=None)
+    p.add_argument('--resume_epoch', type=int,
+                       help='epoch to resume',
+                       default=25)
+
     args = p.parse_args()
 
     return args
