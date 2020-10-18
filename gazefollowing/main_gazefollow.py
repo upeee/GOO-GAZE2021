@@ -98,13 +98,9 @@ def main():
             save_checkpoint(net, optimizer, epoch+1, save_path)
         
         # Evaluate model
-<<<<<<< HEAD
-        test(net, test_data_loader, logger)
-=======
         if args.test_root_dir is not None:
             with torch.no_grad():
                 test(net, test_data_loader, logger)
->>>>>>> e378c8e445ed2f836d74ca730b5dc4d3eca46762
 
 if __name__ == "__main__":
     main()
