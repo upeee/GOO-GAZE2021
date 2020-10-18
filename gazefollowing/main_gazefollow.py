@@ -78,12 +78,12 @@ def main():
     staged_opt = StagedOptimizer(net, learning_rate)
 
     #Is training resumed from previous run?
-    resume_training = False
-    resume_path = './saved_models/temp/model_epoch25.pth.tar'
+    resume_training = args.resume_training
+    resume_path = args.resume_path #'./saved_models/temp/model_epoch25.pth.tar'
     if resume_training :
         net, optimizer = resume_checkpoint(net, optimizer=None, resume_path=resume_path)
         test(net, test_data_loader,logger)
-        start_epoch = 25
+        start_epoch = args.resume_epoch
 
     for epoch in range(start_epoch, max_epoch):
         

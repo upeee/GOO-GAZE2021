@@ -86,7 +86,7 @@ def main():
     if resume_training :
         net, optimizer = resume_checkpoint(net, optimizer=None, resume_path=resume_path)
         test(net, test_data_loader,logger)
-        start_epoch = 25
+        start_epoch = args.resume_epoch
 
     for epoch in range(start_epoch, max_epoch):
         
