@@ -5,9 +5,9 @@ This folder contains the code for implementing, training, and testing of models 
 ## Baselines
 
 1. **"Where are they looking?"** paper by A. Recasens*, A. Khosla*, C. Vondrick and A. Torralba.
-    Select by setting --baseline='recasens'
+    * Select by setting --baseline='recasens'
 2. **Believe It or Not, We Know What You Are Looking at!** paper by Dongze Lian, Zehao Yu, Shenghua Gao. 
-    Select by setting --baseline='gazenet'
+    * Select by setting --baseline='gazenet'
     
 ## Usage
 Training on GOOSynth:
