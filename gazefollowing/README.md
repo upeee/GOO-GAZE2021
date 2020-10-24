@@ -4,7 +4,7 @@ This folder contains the code for implementing, training, and testing of models 
 
 ## Baselines
 
-1. A. Recasens*, A. Khosla*, C. Vondrick and A. Torralba. **"Where are they looking?"** 
+1. A. Recasens, A. Khosla, C. Vondrick and A. Torralba. **"Where are they looking?"** 
     * Select by setting --baseline='recasens'
 2. Dongze Lian, Zehao Yu, Shenghua Gao. **"Believe It or Not, We Know What You Are Looking at!"**
     * Select by setting --baseline='gazenet'
