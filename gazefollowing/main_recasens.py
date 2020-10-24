@@ -59,7 +59,7 @@ def main():
     net.cuda()
 
     start_epoch = 0
-    max_epoch = 5
+    max_epoch = args.max_epoch
     learning_rate = 0.0001
 
     resume_training = False
@@ -81,7 +81,7 @@ def main():
 
         # Save model and optimizer
         if epoch > max_epoch-5:
-            save_path = './saved_models/temp/'
+            save_path = args.save_model_dir
             save_checkpoint(net, optimizer, epoch+1, save_path)
         
         # Evaluate model
