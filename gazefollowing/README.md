@@ -41,5 +41,10 @@ python main.py --baseline='gazenet' \
 --resume_path=
 ```
 
+## Sample Predictions
+Please refer to [modeltester.ipynb](https://github.com/upeee/GazeOnObjects/blob/master/gazefollowing/modeltester.ipynb), which shows how to predict on a set of images with a pretrained gazenet model. 
+
+To see example outputs using a pretrained model, see images in [sample_out](https://github.com/upeee/GazeOnObjects/tree/master/gazefollowing/sample_out). Images are from the goosynth dataset, however sample outputs can also be produced from the GooReal and GazeFollow dataset by tweaking the modeltester.ipynb notebook. 
+
 ## Contributing
 See [CONTRIBUTING.md](https://github.com/upeee/GazeOnObjects/blob/master/gazefollowing/CONTRIBUTING.md) found in this directory.
