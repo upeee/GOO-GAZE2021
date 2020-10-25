@@ -10,11 +10,15 @@ from training.train_yourModel import train, test, GazeOptimizer
 
 ## Step-by-step
 ### 1. Define your Model in ./models/
-- There are currently no requirements for defining the model as long as it is a pytorch module, the input matches your custom dataloader and the output is easily connected to your train() and test() functions. 
+There are currently no requirements for defining the model as long as it is a pytorch module, the input matches your custom dataloader and the output is easily connected to your train() and test() functions. 
 
 ### 2. Define your Dataloader in ./dataloader/
-- Should inherit the pytorch Dataset class.
-- Additional details on how to parse the GOO dataset as well as the dataset proper will be released soon.
+'''python
+train_set = GooDataset(args.train_dir, args.train_annotation, 'train')
+test_set = GooDataset(args.test_dir, args.test_annotation, 'test')
+'''
+The dataset module should accept the above arguments and inherit the pytorch Dataset class so it can be loaded in the pytorch Dataloader module. The Dataloader module can pretty much be customized depending on the input dimensions of your model and the ground truth your model is aiming for.
+Additional details on how to parse the GOO dataset as well as the dataset proper will be released soon.
 
 ### 3. Define train() and test() in training/train_<>.py
 ```python
