@@ -1,6 +1,10 @@
 # Gazefollowing
 
-This folder contains the code for implementing, training, and testing of models on the **gaze estimation** task. 
+This folder contains the code for implementing, training, and testing of models on the **gaze estimation** task. The following metrics are used to evaluate how accurate the model is on this task:
+
+- **L2** : L2 norm'ed distance between predicted gaze point and the ground truth.
+- **Angular Error** : Angle difference between the predicted gaze line from eyes to gaze point and the ground truth.
+- **AUC** (not yet implemented): Computed by getting the AUC of the 5x5 predicted heatmap of the gaze point and the ground truth.
 
 ## Installation 
 See [requirements.txt](https://github.com/upeee/GazeOnObjects/blob/master/requirements.txt) on the main directory. (Will be updated/shortened to essentials in the future). Using Anaconda to recreate the environment is currently recommended. 
