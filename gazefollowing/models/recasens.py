@@ -56,7 +56,7 @@ class AlexGaze(nn.Module):
 
 
 class GazeNet(nn.Module):
-    def __init__(self, placesmodel_path):
+    def __init__(self, placesmodel_path='./alexnet_places365.pth'):
         super(GazeNet, self).__init__()
         self.salpath = AlexSal(placesmodel_path)
         self.gazepath = AlexGaze()
