@@ -3,7 +3,7 @@
 This folder contains the code for implementing, training, and testing of models on the **gaze estimation** task. 
 
 ## Installation 
-See (requirements.txt)[https://github.com/upeee/GazeOnObjects/blob/master/requirements.txt] on the main directory. (Will be updated/shortened to essentials in the future). Using Anaconda to recreate the environment is currently recommended. 
+See [requirements.txt](https://github.com/upeee/GazeOnObjects/blob/master/requirements.txt) on the main directory. (Will be updated/shortened to essentials in the future). Using Anaconda to recreate the environment is currently recommended. 
 
 ## Baselines
 
