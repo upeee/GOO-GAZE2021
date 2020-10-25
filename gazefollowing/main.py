@@ -54,17 +54,13 @@ def main():
     batch_size = args.batch_size
 
     print('==> Loading Train Dataset')
-    train_set = GooDataset(root_dir=args.train_dir,
-                            mat_file=args.train_annotation,
-                            training='train')
+    train_set = GooDataset(args.train_dir, args.train_annotation, 'train')
     train_data_loader = DataLoader(train_set, batch_size=batch_size,
                                    shuffle=True, num_workers=16)
     
     if args.test_dir is not None:
         print('==> Loading Test Dataset')
-        test_set = GooDataset(root_dir=args.test_dir,
-                                mat_file=args.test_annotation,
-                                training='test')
+        test_set = GooDataset(args.test_dir, args.test_annotation, 'test')
         test_data_loader = DataLoader(test_set, batch_size=batch_size//2,
                                     shuffle=False, num_workers=8)
 
