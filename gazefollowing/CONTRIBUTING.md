@@ -2,11 +2,11 @@
 
 ## Summary
 The following functions/classes/modules must be implemented and put in the corresponding directories. In the future, we are looking to make the test() function model independent.
-'''
+```python
 from models.yourModel import GazeNet   
 from dataloader.yourModel import GooDataset, GazeDataset
 from training.train_yourModel import train, test, GazeOptimizer
-'''
+```
 
 ## Step-by-step
 ### 1. Define your Model in ./models/
@@ -17,14 +17,14 @@ from training.train_yourModel import train, test, GazeOptimizer
 - Additional details on how to parse the GOO dataset as well as the dataset proper will be released soon.
 
 ### 3. Define train() and test() in training/train_<>.py
-'''
+```python
 train(net, train_data_loader, optimizer, epoch, logger)
-'''
+```
 The function should accept the above arguments and train a single epoch of your model. Use logger to save train and test errors in a .log file. Custom functions involved in training such as the model loss function should also be implemented in the same file. 
 
-'''
+```python
 test(net, test_data_loader,logger)
-'''
+```
 The function should accept the above arguments and evaluate your model output on the following metrics minimum: **L2** and **Angular Error**. 
 
 ### 4. Define the class GazeOptimizer in training/train_<>.py
