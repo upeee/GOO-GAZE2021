@@ -50,8 +50,8 @@ def main():
     # root_dir='/hdd/HENRI/goosynth/1person/GazeDatasets/'
     # mat_file='/hdd/HENRI/goosynth/picklefiles/trainpickle2to19human.pickle',
 
-    train_set = GooDataset(root_dir=args.train_root_dir,
-                            mat_file=args.train_mat_file,
+    train_set = GooDataset(root_dir=args.train_dir,
+                            mat_file=args.train_annotation,
                             training='train')
     train_data_loader = DataLoader(train_set, batch_size=batch_size,
                                    shuffle=True, num_workers=16)
@@ -59,9 +59,9 @@ def main():
     # root_dir = '/hdd/HENRI/goosynth/test/',
     # mat_file = '/hdd/HENRI/goosynth/picklefiles/testpickle120.pickle',
 
-    if args.test_root_dir is not None:
-        test_set = GooDataset(root_dir=args.test_root_dir,
-                                mat_file=args.test_mat_file,
+    if args.test_dir is not None:
+        test_set = GooDataset(root_dir=args.test_dir,
+                                mat_file=args.test_annotation,
                                 training='test')
         test_data_loader = DataLoader(test_set, batch_size=batch_size//2,
                                     shuffle=False, num_workers=8)

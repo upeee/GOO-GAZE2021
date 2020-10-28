@@ -39,8 +39,8 @@ class GooDataset(Dataset):
         with open(mat_file, 'rb') as f:
             self.data = pickle.load(f)
             self.image_num = len(self.data)
-            
-        print(self.image_num)
+
+        print("Number of Images:", self.image_num)
         logging.info('%s contains %d images' % (self.mat_file, self.image_num))
 
     def generate_data_field(self, eye_point):
