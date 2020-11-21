@@ -1,7 +1,10 @@
 from torchvision import transforms
 import numpy as np
 import random
+from PIL import Image, ImageOps
 from scipy import signal
+import cv2
+import torch
 
 # data transform for image
 data_transforms = {
@@ -53,5 +56,60 @@ def gkern(kernlen=51, std=9):
     return gkern2d
 
 kernel_map = gkern(21, 3)
+
+def generate_data_field(eye_point):
+    """eye_point is (x, y) and between 0 and 1"""
+    height, width = 224, 224
+    x_grid = np.array(range(width)).reshape([1, width]).repeat(height, axis=0)
+    y_grid = np.array(range(height)).reshape([height, 1]).repeat(width, axis=1)
+    grid = np.stack((x_grid, y_grid)).astype(np.float32)
+
+    x, y = eye_point
+    x, y = x * width, y * height
+
+    grid -= np.array([x, y]).reshape([2, 1, 1]).astype(np.float32)
+    norm = np.sqrt(np.sum(grid ** 2, axis=0)).reshape([1, height, width])
+    # avoid zero norm
+    norm = np.maximum(norm, 0.1)
+    grid /= norm
+    return grid
+
+def preprocess_image(image_path, eye):
+    image = cv2.imread(image_path, cv2.IMREAD_COLOR)
+
+    # crop face
+    x_c, y_c = eye
+    x_0 = x_c - 0.15
+    y_0 = y_c - 0.15
+    x_1 = x_c + 0.15
+    y_1 = y_c + 0.15
+    if x_0 < 0:
+        x_0 = 0
+    if y_0 < 0:
+        y_0 = 0
+    if x_1 > 1:
+        x_1 = 1
+    if y_1 > 1:
+        y_1 = 1
+
+    h, w = image.shape[:2]
+    face_image = image[int(y_0 * h):int(y_1 * h), int(x_0 * w):int(x_1 * w), :]
+    # process face_image for face net
+    face_image = cv2.cvtColor(face_image, cv2.COLOR_BGR2RGB)
+    face_image = Image.fromarray(face_image)
+    face_image = data_transforms['test'](face_image)
+    # process image for saliency net
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    image = Image.fromarray(image)
+    image = data_transforms['test'](image)
+
+    # generate gaze field
+    gaze_field = generate_data_field(eye_point=eye)
+    sample = {'image' : image,
+              'face_image': face_image,
+              'eye_position': torch.FloatTensor(eye),
+              'gaze_field': torch.from_numpy(gaze_field)}
+
+    return sample
 
 

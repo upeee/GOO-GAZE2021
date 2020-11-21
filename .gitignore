@@ -2,7 +2,10 @@
 */saved_models/*
 */.ipynb_checkpoints/*
 */__pycache__/*
+*/temp/*
+*/deprecated/*
 
 __pycache__/
 
 *.pth
+*.npz
