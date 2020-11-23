@@ -35,6 +35,9 @@ def parse_inputs():
     p.add_argument('--baseline', type=str,
                         help='recasens or gazenet',
                         default='gazenet')
+    p.add_argument('--gazemask',
+                       help='Enable adding gaze object mask to target heatmap. Only on GOOdataset.',
+                       action='store_true')
     p.add_argument('--batch_size', type=int,
                        help='batch size',
                        default=32)

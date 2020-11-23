@@ -47,8 +47,11 @@ class GooDataset(Dataset):
             self.data = pickle.load(f)
             self.image_num = len(self.data)
 
-        print("Number of Images:", self.image_num)
+        print("==> Number of Images:", self.image_num)
         logging.info('%s contains %d images' % (self.mat_file, self.image_num))
+
+        if self.use_gazemask:
+            print("==> Gazemask is enabled.")
 
     def generate_data_field(self, eye_point):
         """eye_point is (x, y) and between 0 and 1"""
