@@ -130,7 +130,7 @@ class GooDataset(Dataset):
         gaze_field = self.generate_data_field(eye_point=eye)
 
         #Get bounding boxes and class labels as well as gt index for gazed object
-        gt_bboxes, gt_labels = None, None
+        gt_bboxes, gt_labels = np.zeros(1), np.zeros(1)
         gt_labels = np.expand_dims(gt_labels, axis=0)
         gaze_idx = np.copy(data['gazeIdx']).astype(np.int64)
         gaze_class = np.copy(data['gaze_item']).astype(np.int64)
