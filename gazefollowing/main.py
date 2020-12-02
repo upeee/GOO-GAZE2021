@@ -94,7 +94,7 @@ def main():
 
         # Save model and optimizer at the last 5 epochs
         if epoch > max_epoch-5:
-            save_path = './saved_models/temp2/'
+            save_path = args.save_model_dir
             save_checkpoint(net, optimizer, epoch+1, save_path)
         
         # Evaluate model
