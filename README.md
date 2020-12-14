@@ -16,7 +16,7 @@ The following baselines are stable and found in the *master* branch:
 
 The following baselines are works in progress
 
-3. Chong, Eunji, et al. "Detecting Attended Visual Targets in Video." Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2020.
+3. Chong, Eunji, et al. **"Detecting Attended Visual Targets in Video."** Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2020.
     * implemented in the *chong* branch
 4. GOOv1: Gazemask with Item Penalizing Loss (IPL) and Automatic Domain Randomization (ADR)
     * to be implemented in the *master* branch
