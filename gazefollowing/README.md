@@ -16,7 +16,13 @@ The metrics used are:
 - **Class Proximate Accuracy (CPA)** : Same as PA, but the class of the selected object must match the ground truth class.
 
 ## Installation 
-See [requirements.txt](https://github.com/upeee/GazeOnObjects/blob/master/requirements.txt) on the main directory. (Will be updated/shortened to essentials in the future). Using Anaconda to recreate the environment is currently recommended. 
+See [requirements.txt](https://github.com/upeee/GazeOnObjects/blob/master/requirements.txt) on the main directory to view the exact environment used to evaluate the baselines found in the master branch. For a minimal list of requirements:
+
+* python >= 3.7.*
+* pytorch >= 1.1
+* torchvision >= 0.3.0
+* cudatoolkit >= 9.0
+* opencv, scipy, scikit-image, scikit-learn, tqdm
 
 ## Baselines
 
