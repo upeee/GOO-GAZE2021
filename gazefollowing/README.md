@@ -24,6 +24,8 @@ See [requirements.txt](https://github.com/upeee/GazeOnObjects/blob/master/requir
     * Select by setting --baseline='recasens'
 2. Dongze Lian, Zehao Yu, Shenghua Gao. **"Believe It or Not, We Know What You Are Looking at!"**
     * Select by setting --baseline='gazenet'
+3. Gazemask (ours) method can be enabled, keep in mind this does not include IPL or ADR as of this version.
+    * Select by setting the flag --gazemask 
     
 ## Usage
 Training on GOOSynth:
@@ -47,7 +49,15 @@ python main.py --baseline='gazenet' \
 --log_file='training.log' \
 --save_model_dir='./saved_models/temp/' \
 --resume_training
---resume_path=
+--resume_path='./saved_models/gazenet_goo/model_epoch25.pth.tar'\
+```
+
+To evaluate model on Gaze estimation and GOO metrics:
+```
+!python evaluate.py \
+--test_dir='../goosynth/test/'\
+--test_annotation='../goosynth/picklefiles/testpickle120.pickle'\
+--resume_path='./saved_models/gazenet_goo/model_epoch25.pth.tar'\
 ```
 
 ## Sample Predictions
