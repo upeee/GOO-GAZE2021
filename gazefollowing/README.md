@@ -60,6 +60,8 @@ To evaluate model on Gaze estimation and GOO metrics:
 --resume_path='./saved_models/gazenet_goo/model_epoch25.pth.tar'\
 ```
 
+For an example of the expected output of the scripts, you can check out the ipynb notebooks that were used for testing.
+
 ## Sample Predictions
 Please refer to [modeltester.ipynb](https://github.com/upeee/GazeOnObjects/blob/master/gazefollowing/modeltester.ipynb), which shows how to predict on a set of images with a pretrained gazenet model. 
 
