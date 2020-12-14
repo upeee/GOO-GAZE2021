@@ -25,4 +25,4 @@ The following baselines are works in progress
     
 ## Documentation
 
-Documentation on this repository's installation and usage can be found in the (readme)[https://github.com/upeee/GazeOnObjects/blob/master/gazefollowing/README.md] under the gazefollowing directory. 
+Documentation on this repository's installation and usage can be found in the [readme](https://github.com/upeee/GazeOnObjects/blob/master/gazefollowing/README.md) under the gazefollowing directory. 
