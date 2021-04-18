@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 2021-02-04 13:45:58,407 INFO /home/eee198/Documents/datasets/GazeFollowData/train_annotations.mat contains 125557 images
 2021-02-04 13:45:58,579 INFO /home/eee198/Documents/datasets/GazeFollowData/test_annotations.mat contains 4782 images
 2021-02-04 13:46:18,986 INFO loss: 0.17941, 0.63976, 0.81917
@@ -602,3 +603,7 @@
 2021-02-04 13:52:42,019 INFO loss: 0.04941, 0.04399, 0.09339
 2021-02-04 13:52:42,122 INFO average loss : [0.05949629 0.11066426 0.17016055]
 2021-02-04 13:52:42,128 INFO average error: [ 0.92117141  0.15131992 18.27580832]
+=======
+2020-11-23 15:11:57,694 INFO /hdd/HENRI/goosynth/picklefiles/trainpickle2to19human.pickle contains 172800 images
+2020-11-23 15:11:58,974 INFO /hdd/HENRI/goosynth/picklefiles/testpickle120.pickle contains 19200 images
+>>>>>>> 5687f229831015da8e3f23a8f0570d1d494f622c

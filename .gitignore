@@ -6,6 +6,7 @@
 */deprecated/*
 */sample_out_nopretrain/*
 */sample_out_pretrained/*
+*/logs/*
 
 __pycache__/
 
