@@ -14,15 +14,6 @@ The following baselines are stable and found in the *master* branch:
 1. A. Recasens, A. Khosla, C. Vondrick and A. Torralba. **"Where are they looking?"** 
 2. Dongze Lian, Zehao Yu, Shenghua Gao. **"Believe It or Not, We Know What You Are Looking at!"**
 3. Chong, Eunji and Wang, Yongxin and Ruiz, Nataniel and Rehg, James M. **"Detecting Attended Visual Targets in Video"**.
-
-The following baselines are works in progress
-
-3. Chong, Eunji, et al. **"Detecting Attended Visual Targets in Video."** Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2020.
-    * implemented in the *chong* branch
-4. GOOv1: Gazemask with Item Penalizing Loss (IPL) and Automatic Domain Randomization (ADR)
-    * to be implemented in the *master* branch
-5. Gaze Object Transformer
-    * implemented in the *gazeobject_transformer* branch
     
 ## Documentation
 
