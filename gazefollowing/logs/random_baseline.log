@@ -1,0 +1,3 @@
+2021-01-27 12:25:59,402 INFO /hdd/HENRI/goosynth/picklefiles/trainpickle2to19human.pickle contains 172800 images
+2021-01-27 12:26:00,516 INFO /hdd/HENRI/goosynth/picklefiles/testpickle120.pickle contains 19200 images
+2021-01-27 12:33:55,119 INFO average error: [ 0.49728516  0.45361068 76.97099224]

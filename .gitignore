@@ -4,8 +4,12 @@
 */__pycache__/*
 */temp/*
 */deprecated/*
+*/sample_out_nopretrain/*
+*/sample_out_pretrained/*
 
 __pycache__/
 
+
 *.pth
 *.npz
+*.zip

@@ -4,10 +4,25 @@ This folder contains the code for implementing, training, and testing of models 
 
 - **L2** : L2 norm'ed distance between predicted gaze point and the ground truth.
 - **Angular Error** : Angle difference between the predicted gaze line from eyes to gaze point and the ground truth.
-- **AUC** (not yet implemented): Computed by getting the AUC of the 5x5 predicted heatmap of the gaze point and the ground truth.
+- **AUC** : Computed by getting the AUC of the 5x5 predicted heatmap of the gaze point and the ground truth.
+
+# Gaze Object Detection
+
+Additionally, code is also provided to select the nearest bbox to the gazepoint. This way we are able to evaluate gaze estimation networks on the task of **gaze object detection**. In this method, bounding boxes of the objects must be provided, which is present in the GOO dataset.
+
+The metrics used are:
+
+- **Proximate Accuracy (PA)** : Accuracy of the gazepoint within a certain radius or proximity from the object.
+- **Class Proximate Accuracy (CPA)** : Same as PA, but the class of the selected object must match the ground truth class.
 
 ## Installation 
-See [requirements.txt](https://github.com/upeee/GazeOnObjects/blob/master/requirements.txt) on the main directory. (Will be updated/shortened to essentials in the future). Using Anaconda to recreate the environment is currently recommended. 
+See [requirements.txt](https://github.com/upeee/GazeOnObjects/blob/master/requirements.txt) on the main directory to view the exact environment used to evaluate the baselines found in the master branch. For a minimal list of requirements:
+
+* python >= 3.7.*
+* pytorch >= 1.1
+* torchvision >= 0.3.0
+* cudatoolkit >= 9.0
+* opencv, scipy, scikit-image, scikit-learn, tqdm
 
 ## Baselines
 
@@ -15,6 +30,8 @@ See [requirements.txt](https://github.com/upeee/GazeOnObjects/blob/master/requir
     * Select by setting --baseline='recasens'
 2. Dongze Lian, Zehao Yu, Shenghua Gao. **"Believe It or Not, We Know What You Are Looking at!"**
     * Select by setting --baseline='gazenet'
+3. Gazemask (ours) method can be enabled, keep in mind this does not include IPL or ADR as of this version.
+    * Select by setting the flag --gazemask 
     
 ## Usage
 Training on GOOSynth:
@@ -38,8 +55,18 @@ python main.py --baseline='gazenet' \
 --log_file='training.log' \
 --save_model_dir='./saved_models/temp/' \
 --resume_training
---resume_path=
+--resume_path='./saved_models/gazenet_goo/model_epoch25.pth.tar'\
 ```
+
+To evaluate model on Gaze estimation and GOO metrics:
+```
+!python evaluate.py \
+--test_dir='../goosynth/test/'\
+--test_annotation='../goosynth/picklefiles/testpickle120.pickle'\
+--resume_path='./saved_models/gazenet_goo/model_epoch25.pth.tar'\
+```
+
+For an example of the expected output of the scripts, you can check out the ipynb notebooks that were used for testing.
 
 ## Sample Predictions
 Please refer to [modeltester.ipynb](https://github.com/upeee/GazeOnObjects/blob/master/gazefollowing/modeltester.ipynb), which shows how to predict on a set of images with a pretrained gazenet model. 

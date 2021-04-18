@@ -144,7 +144,7 @@ class GazeNet(nn.Module):
 
         hm_base = hm_base.unsqueeze(1)
 
-        hm_base = F.interpolate(input = hm_base, size = (227, 227), mode='bicubic')
+        hm_base = F.interpolate(input = hm_base, size = (227, 227), mode='bicubic', align_corners=False)
 
         hm_base = hm_base.squeeze(1)
 
@@ -214,7 +214,7 @@ class GazeNet(nn.Module):
 
         hm_base = hm_base.unsqueeze(1)
 
-        hm_base = F.interpolate(input = hm_base, size = (227, 227), mode='bicubic')
+        hm_base = F.interpolate(input = hm_base, size = (227, 227), mode='bicubic', align_corners=False)
 
         hm_base = hm_base.squeeze(1)
 

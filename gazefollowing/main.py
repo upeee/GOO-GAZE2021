@@ -54,7 +54,7 @@ def main():
     batch_size = args.batch_size
 
     print('==> Loading Train Dataset')
-    train_set = GooDataset(args.train_dir, args.train_annotation, 'train')
+    train_set = GooDataset(args.train_dir, args.train_annotation, 'train', use_gazemask=args.gazemask)
     train_data_loader = DataLoader(train_set, batch_size=batch_size,
                                    shuffle=True, num_workers=16)
     
@@ -79,7 +79,6 @@ def main():
 
     # Resuming Training
     resume_training = args.resume_training
-    print(resume_training)
     if resume_training:
         net, optimizer, start_epoch = resume_checkpoint(net, optimizer, args.resume_path)       
         if args.test_dir is not None: 
@@ -95,7 +94,7 @@ def main():
 
         # Save model and optimizer at the last 5 epochs
         if epoch > max_epoch-5:
-            save_path = './saved_models/temp2/'
+            save_path = args.save_model_dir
             save_checkpoint(net, optimizer, epoch+1, save_path)
         
         # Evaluate model

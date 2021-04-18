@@ -35,6 +35,9 @@ def parse_inputs():
     p.add_argument('--baseline', type=str,
                         help='recasens or gazenet',
                         default='gazenet')
+    p.add_argument('--gazemask',
+                       help='Enable adding gaze object mask to target heatmap. Only on GOOdataset.',
+                       action='store_true')
     p.add_argument('--batch_size', type=int,
                        help='batch size',
                        default=32)
@@ -44,6 +47,10 @@ def parse_inputs():
     p.add_argument('--max_epochs', type=int,
                        help='max epochs to end training',
                        default=25)
+
+    # Chong specific
+    p.add_argument("--init_weights", type=str, default="saved_model/chong_init_weights_spatial.pt", help="initial weights")
+
 
     args = p.parse_args()
 

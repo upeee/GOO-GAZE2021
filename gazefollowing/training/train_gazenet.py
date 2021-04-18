@@ -3,6 +3,8 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.autograd import Variable
 import numpy as np
+import cv2
+from sklearn.metrics import roc_auc_score
 
 from tqdm import tqdm
 
@@ -92,12 +94,16 @@ def train(net, train_dataloader, optimizer, epoch, logger):
 
     return running_loss
     
-def test(net, test_data_loader, logger):
+def test(net, test_data_loader, logger, save_output=False):
     net.eval()
     total_loss = []
     total_error = []
     info_list = []
     heatmaps = []
+
+    all_gazepoints = []
+    all_predmap = []
+    all_gtmap = []
 
     with torch.no_grad():
         for data in tqdm(test_data_loader, total=len(test_data_loader)):
@@ -106,12 +112,9 @@ def test(net, test_data_loader, logger):
             image, face_image, gaze_field, eye_position, gt_position, gt_heatmap = \
                 map(lambda x: Variable(x.cuda()), [image, face_image, gaze_field, eye_position, gt_position, gt_heatmap])
 
-            #print(image.shape)
-            #print(face_image.shape)
-            #print(eye_position.shape)
             direction, predict_heatmap = net([image, face_image, gaze_field, eye_position])
-            #print("Direction shape: ", direction.shape)
-            #print("Heatmap shape: ", predict_heatmap.shape)
+            #curr_batch_size = predict_heatmap.shape[0]
+            #predict_heatmap = torch.rand(curr_batch_size, 1, 56, 56).cuda()
 
             heatmap_loss, m_angle_loss = \
                 F_loss(direction, predict_heatmap, eye_position, gt_position, gt_heatmap)
@@ -121,15 +124,17 @@ def test(net, test_data_loader, logger):
 
             total_loss.append([heatmap_loss.item(),
                             m_angle_loss.item(), loss.item()])
-            logger.info('loss: %.5lf, %.5lf, %.5lf'%( \
-                heatmap_loss.item(), m_angle_loss.item(), loss.item()))
+            #logger.info('loss: %.5lf, %.5lf, %.5lf'%( \
+            #    heatmap_loss.item(), m_angle_loss.item(), loss.item()))
 
             middle_output = direction.cpu().data.numpy()
             final_output = predict_heatmap.cpu().data.numpy()
             target = gt_position.cpu().data.numpy()
             eye_position = eye_position.cpu().data.numpy()
-            for m_direction, f_point, gt_point, eye_point in \
-                zip(middle_output, final_output, target, eye_position):
+            predict_heatmap = predict_heatmap.cpu().data.numpy()
+
+            for m_direction, f_point, gt_point, eye_point, heatmap in \
+                zip(middle_output, final_output, target, eye_position, predict_heatmap):
                 f_point = f_point.reshape([224 // 4, 224 // 4])
                 heatmaps.append(f_point)
 
@@ -157,18 +162,35 @@ def test(net, test_data_loader, logger):
                 f_cos_sim = np.maximum(np.minimum(f_cos_sim, 1.0), -1.0)
                 f_angle = np.arccos(f_cos_sim) * 180 / np.pi
 
+                #AUC
+                heatmap = np.squeeze(heatmap)
+                heatmap = cv2.resize(heatmap, (5, 5))
+                gt_heatmap = np.zeros((5, 5))
+                x, y = list(map(int, gt_point * 5))
+                gt_heatmap[y, x] = 1.0
+                
+                all_gazepoints.append(f_point)
+                all_predmap.append(heatmap)
+                all_gtmap.append(gt_heatmap)
+                #score = roc_auc_score(gt_heatmap.reshape([-1]).astype(np.int32), heatmap.reshape([-1]))
 
-                total_error.append([f_dist, m_angle, f_angle])
+                total_error.append([f_dist, f_angle])
                 info_list.append(list(f_point))
+                
     info_list = np.array(info_list)
-    #np.savez('multi_scale_concat_prediction.npz', info_list=info_list)
 
-    #heatmaps = np.stack(heatmaps)
-    #np.savez('multi_scale_concat_heatmaps.npz', heatmaps=heatmaps)
+    l2, ang = np.mean(np.array(total_error), axis=0)
+    all_gazepoints = np.vstack(all_gazepoints)
+    all_predmap = np.stack(all_predmap).reshape([-1])
+    all_gtmap = np.stack(all_gtmap).reshape([-1])
+    auc = roc_auc_score(all_gtmap, all_predmap)
 
-    logger.info('average loss : %s'%str(np.mean(np.array(total_loss), axis=0)))
-    logger.info('average error: %s'%str(np.mean(np.array(total_error), axis=0)))
+    if save_output:
+        np.savez('predictions.npz', gazepoints=all_gazepoints)
+
+    #logger.info('average loss : %s'%str(np.mean(np.array(total_loss), axis=0))) 
+    logger.info('average error: %s'%str([auc, l2, ang]))
 
     net.train()
 
-    return np.mean(np.array(total_error), axis=0)
+    return [auc, l2, ang]
