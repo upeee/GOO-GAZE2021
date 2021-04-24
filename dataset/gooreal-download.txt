@@ -1,0 +1,43 @@
+GOO-real consists of both dense and sparse setups.
+You can download GOO-real in the following link:
+
+https://drive.google.com/drive/folders/1vdJ_PisxmjgcKh6lxO36mfVvsg7B060E?usp=sharing
+Updated New OneShotPickleFileForDense(Nov25,2020): https://drive.google.com/file/d/1Vmz3SAoq9GKdUuVGYSClrzsMPnKEwczw/view?usp=sharing
+Updated New TestPickleFileForDense(Nov25,2020): https://drive.google.com/file/d/1fO3X-9H9tIWw1r9DwGFpyycQI7cZP4JY/view?usp=sharing
+
+The main directory for dense set GOO-real is "finalrealdatasetImgsV2". Its pickle files are:
+oneshotrealhumans.pickle - used for one-shot training
+testrealhumans.pickle - used for testing
+valrealhumans.pickle - used for validation
+
+The main directory for sparse set GOO-real is "finalrealdatasetImgsV2Sparsed". Its pickle files are:
+testrealhumansSparsed.pickle - used for testing
+
+The contents of the pickle files are a list of dictionary objects with length equal to the total number of images. Each dictionary contains the following data:
+
+data_dict = {
+    'filename': "the filename tree of this image",
+    'width': "1920width",
+    'height': "1080height",
+    'ann': {
+        'bboxes': "This is a list of bounding boxes. Each element has the contents [xmin, ymin, xmax, ymax]. The last bounding box is the head of the person in the image.",
+        'labels': "This is the class label of the ith index of 'bboxes' data. The class label ranges from 1-24. The last label is -1.",
+        'bboxes_ignore': "Not important",
+        'labels_ignore': "Not important",
+        'gt_bboxes_ignore': "Not important",
+        'gt_labels_ignore': "Not important",
+        },
+    'gaze_item': "This is the class (1-24) of the gazed grocery item",
+    'gazeIdx': "This contains the index of 'bboxes' (0 to len(bboxes)) which refers to the gazed item's bounding box",
+    'gaze_cx': "This is the specific point gx in the image that is considered the gazepoint. It should be inside the gazed bounding box.",
+    'gaze_cy': "This is the specific point gy in the image that is considered the gazepoint. It should be inside the gazed bounding box.",
+    'hx': "This is the point X in the head bounding box. Use this to draw a line to the gazepoint to form a gazeline.",
+    'hy': "This is the point Y in the head bounding box. Use this to draw a line to the gazepoint to form a gazeline.",
+    'seg': "Contains the segmentation of the gazed object item. This contains a list of pixels [cx, cy] that refer to the gazed object.",
+    'cam:': "Not important",
+    'occluded': "Not important",
+}
+
+NOTE:
+Please note that the image file is in 1920X1080 format. However, the bounding box data, [xmin, ymin, xmax, ymax], and segmentation data [cx, cy], gazepoint [gx, gy], headpoint [hx, hy] are all in the scales of 640X480.
+You can, for example, use cv.resize(img, (640, 480)) in python to train the data (no need to rescale data other than the image size only).

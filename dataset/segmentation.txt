@@ -1,0 +1,27 @@
+Segmentations Data Details:
+1.) You data below corresponds to the 1 to 440 grocery items in the scene (there are 440 total items). The class of these grocery items are given below according to their numbering. (groceryname = groceryclass -------> grocerynumber1-440)
+
+Kellogg's Corn Flakes = 1 -------> 1-8
+Honey Stars = 2 -------> 9-16
+Koko Krunch = 3 -------> 17-24
+Fita = 4 -------> 25-56
+Mamon = 5 -------> 57-72
+Buttercake = 6 -------> 73-88
+Wafer = 7 -------> 89-104
+Choco Crunchies = 8 -------> 105-136
+iHop = 9 -------> 137-168
+Butterlicious = 10 -------> 169-192
+Pik-nik = 11 -------> 193-208
+Pringles = 12 -------> 209-232
+Super Fruits = 13 -------> 233-256
+Locally Mango = 14 -------> 257-280
+Camomille = 15 -------> 281-312
+Oishi Prawn = 16 -------> 313-328
+Kimchi Noodles = 17 -------> 329-360
+Grahams = 18 -------> 361-368
+Hansel = 19 -------> 369-376
+Danisa = 20 -------> 377-384
+Chocolate Chips = 21 -------> 385-392
+Fresh Milk = 22 -------> 393-408
+Bear brand = 23 -------> 409-424
+Chuckie = 24 -------> 425-440

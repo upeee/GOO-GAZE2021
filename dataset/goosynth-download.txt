@@ -1,0 +1,40 @@
+GOO-synth consists of both dense and sparse setups.
+You can download GOO-synth in the following link:
+
+GOOSynth-Train: https://drive.google.com/file/d/1r6XGVn_I4fdX71eFalrloxRVsbz_v0B-/view?usp=sharing
+GOOSynth-Test: https://drive.google.com/file/d/1OuHG1oQuKKRXvv7WrfP8FxT50_y5KtGR/view?usp=sharing
+
+There are two zip files, one for train and the other for test. Upon unzipping one, you can find two folders, images and data. The images folder contain the images of each scene and the data folder has the pickle files
+containing all data about the image. The image file and the pickle file has the same name. Each pickle data will contain a python dictionary having the structure below:
+
+data_dict = {
+    'filename': This is the image name,
+    'width': Image width,
+    'height': Image height,
+    'ann': {
+        'bboxes': list of bounding boxes, each holding the data (xmin, ymin, xmax, ymax),
+        'labels': list of classes corresponding to 'bboxes' (see objectclasses.txt). This list should have the same size as 'bboxes'.
+        },
+    'envparams': {
+        'cab': The grocery shelf number of the scene (there are 6 different cabinets, [1,2,3,... 6]),
+        'hum': The human number in the scene (there are 20 different humans, [1,2,3,... 20]),
+        'light': The lighting number in the scene (there are 4 different lightings [0.1, 0.7, 1.3, 1.9]),
+        'cam': The camera view in the scene (there are 50 different camera views [1,2,3,... 50]),
+        'env': The skybox/background in the scene (there are 8 different backgrounds [1,2,3,... 8]),
+        },
+    'gaze_item': The class of the grocery item currently being gazed at (see objectclasses.txt) or -1 if item is not visible,
+    'gazeIdx': The index in 'ann', 'bboxes', that corresponds to the bounding box of the gazed item or -1 if item is not visible,
+    'gaze_cx': The gaze point x value of the gazed grocery item,
+    'gaze_cy': The gaze point y value of the gazed grocery item,
+    'hx': The head location x value of the person (located between in the middle of person's head near the eyes),
+    'hy': The head location y value of the person (located between in the middle of person's head near the eyes),
+    'pitch': pitch value of the head rotation,
+    'yaw': yaw value of the head rotation,
+    'roll': roll value of the head rotation,
+    'seg': 2D numpy for instance segmentation data. -1 for head, 0 for bg, and (1-440) for grocery object (see segmentation.txt),
+    'segm_gazeIdx': The grocerynumber (see segmentation.txt) in 'seg' that corresponds to the gazed grocery item, which should be a number from 1-440, or -1 if occluded.
+    'occluded': If the gazed grocery item is visible in the scene or not,
+}
+
+NOTE:
+Please note that the image file is already in 640X480 format. Also, the bounding box data, [xmin, ymin, xmax, ymax], and segmentation data [cx, cy], gazepoint [gx, gy], headpoint [hx, hy] are all in the scales of 640X480.
