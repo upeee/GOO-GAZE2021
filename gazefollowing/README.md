@@ -11,7 +11,7 @@ This folder contains the code for implementing, training, and testing of models 
 For future work, we hope to come up with novel metrics that are more suited to the task of Gaze Object Detection than the current metrics used in Gazefollowing.
 
 ## Installation 
-See [requirements.txt](https://github.com/upeee/GazeOnObjects/blob/master/requirements.txt) on the main directory to view the exact environment used to evaluate the baselines found in the master branch. For a minimal list of requirements:
+For a minimal list of requirements:
 
 * python >= 3.7.*
 * pytorch >= 1.1
