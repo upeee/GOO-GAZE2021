@@ -14,7 +14,12 @@ The following baselines are stable and found in the *master* branch:
 1. A. Recasens, A. Khosla, C. Vondrick and A. Torralba. **"Where are they looking?"** 
 2. Dongze Lian, Zehao Yu, Shenghua Gao. **"Believe It or Not, We Know What You Are Looking at!"**
 3. Chong, Eunji and Wang, Yongxin and Ruiz, Nataniel and Rehg, James M. **"Detecting Attended Visual Targets in Video"**.
-    
-## Documentation
 
-Documentation on this repository's installation and usage can be found in the [readme](https://github.com/upeee/GazeOnObjects/blob/master/gazefollowing/README.md) under the gazefollowing directory. 
+## dataset
+The [dataset](./dataset/) directory contains instructions on how to download GOO-Synth and GOO-Real, keys to access the annotations, as well as lookup tables for the object detection and segmentation classes.
+    
+## gazefollowing
+
+The gazefollowing directory contains the code used in implementing selected gazefollowing methods for evaluation on the GazeFollow and GOO dataset.
+
+Documentation on this directory's installation and usage can be found in the [readme](https://github.com/upeee/GazeOnObjects/blob/master/gazefollowing/README.md).
