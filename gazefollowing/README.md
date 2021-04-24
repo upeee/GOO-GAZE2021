@@ -19,6 +19,8 @@ For a minimal list of requirements:
 * cudatoolkit >= 9.0
 * opencv, scipy, scikit-image, scikit-learn, tqdm
 
+Exact versions of these packages used to run the evaluation is provided in [requirements.txt](./requirements.txt).
+
 ## Baselines
 
 1. A. Recasens, A. Khosla, C. Vondrick and A. Torralba. **"Where are they looking?"** 
