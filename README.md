@@ -1,6 +1,8 @@
 # Gaze-on-Objects (GOO) Project
 A repository featuring evaluation of state-of-the-art research papers on the task of **Gaze Estimation** (locating the specific point a human in an image is looking at) and the novel task of **Gaze Object Detection** (identifying the object in an image a human in the same image is looking at).
 
+
+
 ## Datasets
 
 1. **GazeFollow**: A dataset for evaluation on the Gaze Estimation task. Composed of images of humans in different scenarios with their heads and gaze points annotated.
@@ -23,3 +25,17 @@ The [dataset](./dataset/) directory contains instructions on how to download GOO
 The gazefollowing directory contains the code used in implementing selected gazefollowing methods for evaluation on the GazeFollow and GOO dataset.
 
 Documentation on this directory's installation and usage can be found in the [readme](https://github.com/upeee/GazeOnObjects/blob/master/gazefollowing/README.md).
+
+## Citation
+If you find this work useful, please cite:
+
+```
+@inproceedings{tomas2021goo,
+  title={GOO: A Dataset for Gaze Object Prediction in Retail Environments},
+  author={Tomas, Henry and Reyes, Marcus and Dionido, Raimarc and Ty, Mark and Casimiro, Joel and Atienza, Rowel and Guinto, Richard},
+  booktitle = {CVPR Workshops (CVPRW)},
+  year={2021},
+  pubstate={published},
+  tppubtype={inproceedings}
+}
+```
