@@ -33,7 +33,7 @@ If you find this work useful, please cite:
 ```
 @inproceedings{tomas2021goo,
   title={GOO: A Dataset for Gaze Object Prediction in Retail Environments},
-  author={Tomas, Henry and Reyes, Marcus and Dionido, Raimarc and Ty, Mark and Casimiro, Joel and Atienza, Rowel and Guinto, Richard},
+  author={Tomas, Henri and Reyes, Marcus and Dionido, Raimarc and Ty, Mark and Casimiro, Joel and Atienza, Rowel and Guinto, Richard},
   booktitle = {CVPR Workshops (CVPRW)},
   year={2021},
   pubstate={published},
