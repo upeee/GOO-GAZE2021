@@ -3,6 +3,9 @@ A repository featuring evaluation of state-of-the-art research papers on the tas
 
 ![GOO_GIF](./tools/GOO_GIF.gif)
 
+## Paper
+
+[Arxiv](https://arxiv.org/abs/2105.10793)
 
 ## Datasets
 
