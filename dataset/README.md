@@ -6,7 +6,7 @@ This folder contains instructions on how to download GOO-Synth and GOO-Real, key
 Refer to [goosynth-download.txt](./goosynth-download.txt)
 
 ### Downloading GOO-Real
-Refer to [goosynth-download.txt](./goosynth-download.txt)
+Refer to [gooreal-download.txt](./gooreal-download.txt)
 
 ### Lookup Tables
 For object detection: [objectclasses.txt](./objectclasses.txt)
