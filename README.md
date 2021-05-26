@@ -7,6 +7,8 @@ A repository featuring evaluation of state-of-the-art research papers on the tas
 
 [Arxiv](https://arxiv.org/abs/2105.10793)
 
+To appear at [CVPR2021 3rd International Workshop on Gaze Estimation and Prediction in the Wild (GAZE 2021)](https://gazeworkshop.github.io/2021/)
+
 ## Datasets
 
 1. **GazeFollow**: A dataset for evaluation on the Gaze Estimation task. Composed of images of humans in different scenarios with their heads and gaze points annotated.
