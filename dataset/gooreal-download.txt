@@ -1,9 +1,7 @@
 GOO-real consists of both dense and sparse setups.
 You can download GOO-real in the following link:
 
-https://drive.google.com/drive/folders/1vdJ_PisxmjgcKh6lxO36mfVvsg7B060E?usp=sharing
-Updated New OneShotPickleFileForDense(Nov25,2020): https://drive.google.com/file/d/1Vmz3SAoq9GKdUuVGYSClrzsMPnKEwczw/view?usp=sharing
-Updated New TestPickleFileForDense(Nov25,2020): https://drive.google.com/file/d/1fO3X-9H9tIWw1r9DwGFpyycQI7cZP4JY/view?usp=sharing
+New link updated (5/31/2021): https://drive.google.com/file/d/1LJTSZ0-HMdKopvG8qNkxvbZwgCgygtwF/view?usp=sharing
 
 The main directory for dense set GOO-real is "finalrealdatasetImgsV2". Its pickle files are:
 oneshotrealhumans.pickle - used for one-shot training
