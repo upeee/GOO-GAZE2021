@@ -12,6 +12,6 @@ Refer to [gooreal-download.txt](./gooreal-download.txt)
 For object detection: [objectclasses.txt](./objectclasses.txt)
 For segmentation: [segmentation.txt](./segmentation.txt)
 
-
+---
 ### Updates
 (08/22/2021): Added pickle file links in dataset/goosynth-download.txt and dataset/gooreal-download.txt
