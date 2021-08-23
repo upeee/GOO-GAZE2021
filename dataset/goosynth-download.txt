@@ -3,8 +3,6 @@ You can download GOO-synth in the following link:
 
 GOOSynth-Train: https://drive.google.com/file/d/1r6XGVn_I4fdX71eFalrloxRVsbz_v0B-/view?usp=sharing
 GOOSynth-Test: https://drive.google.com/file/d/1OuHG1oQuKKRXvv7WrfP8FxT50_y5KtGR/view?usp=sharing
-TrainPickle: https://drive.google.com/file/d/1OSpzLoDvDvn_vnLoGNGoV8Kred2eiBX8/view?usp=sharing
-TestPickle: https://drive.google.com/file/d/1H1zZ42j6JajF-zRVCSbAl-7jj4EJlYQU/view?usp=sharing
 
 There are two zip files, one for train and the other for test. Upon unzipping one, you can find two folders, images and data. The images folder contain the images of each scene and the data folder has the pickle files
 containing all data about the image. The image file and the pickle file has the same name. Each pickle data will contain a python dictionary having the structure below:
