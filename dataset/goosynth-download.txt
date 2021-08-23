@@ -1,3 +1,4 @@
+### Updated 8/23/2021: These new links contain the segmentation data of the whole image, which explains why individual images have their own pickle files. We cannot pack all the images into one single pickle file, hence the individual pickle files.
 GOO-synth consists of both dense and sparse setups.
 You can download GOO-synth in the following link:
 
