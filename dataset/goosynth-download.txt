@@ -1,12 +1,11 @@
-### Updated 8/23/2021: These new links contain the segmentation data of the whole image, which explains why individual images have their own pickle files. We cannot pack all the images into one single pickle file, hence the individual pickle files.
-GOO-synth consists of both dense and sparse setups.
+GOO-synth consists of both dense and sparse setups. The GOOSynth-Train and GOOSynth-Test contain all the images of GOOSynth. There are also individual pickle files for each image, which contains the dictionary described below.
+The trainPickleNoSegm and testPickleNoSegm contain all pickle file dictionaries merged together into one list. The difference is that here, the key-value element 'seg' is deleted, for merging to be possible.
 You can download GOO-synth in the following link:
 
 GOOSynth-Train: https://drive.google.com/file/d/1r6XGVn_I4fdX71eFalrloxRVsbz_v0B-/view?usp=sharing
 GOOSynth-Test: https://drive.google.com/file/d/1OuHG1oQuKKRXvv7WrfP8FxT50_y5KtGR/view?usp=sharing
-
-There are two zip files, one for train and the other for test. Upon unzipping one, you can find two folders, images and data. The images folder contain the images of each scene and the data folder has the pickle files
-containing all data about the image. The image file and the pickle file has the same name. Each pickle data will contain a python dictionary having the structure below:
+trainPickleNoSegm: https://drive.google.com/file/d/1kvDAOdglW7ns2Ng3y_q8_hNEBZN6al24/view?usp=sharing
+testPickleNoSegm: https://drive.google.com/file/d/1yIaxXO25Y-Mycy2VJ49QqgNYsKIJ8U16/view?usp=sharing
 
 data_dict = {
     'filename': This is the image name,
