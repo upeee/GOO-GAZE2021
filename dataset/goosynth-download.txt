@@ -2,10 +2,21 @@ GOO-synth consists of both dense and sparse setups. The GOOSynth-Train and GOOSy
 The trainPickleNoSegm and testPickleNoSegm contain all pickle file dictionaries merged together into one list. The difference is that here, the key-value element 'seg' is deleted, for merging to be possible.
 You can download GOO-synth in the following link:
 
-GOOSynth-Train: https://drive.google.com/file/d/1r6XGVn_I4fdX71eFalrloxRVsbz_v0B-/view?usp=sharing
-GOOSynth-Test: https://drive.google.com/file/d/1OuHG1oQuKKRXvv7WrfP8FxT50_y5KtGR/view?usp=sharing
-trainPickleNoSegm: https://drive.google.com/file/d/1kvDAOdglW7ns2Ng3y_q8_hNEBZN6al24/view?usp=sharing
-testPickleNoSegm: https://drive.google.com/file/d/1yIaxXO25Y-Mycy2VJ49QqgNYsKIJ8U16/view?usp=sharing
+GOOSynth-Train(ZipParts):
+part0: https://zenodo.org/record/5501686/files/goosynth_train.zip?download=1
+part1: https://zenodo.org/record/5501754/files/goosynth_train.z01?download=1
+part2: https://zenodo.org/record/5501788/files/goosynth_train.z02?download=1
+part3: https://zenodo.org/record/5501941/files/goosynth_train.z03?download=1
+part4: https://zenodo.org/record/5502388/files/goosynth_train.z04?download=1
+part5: https://zenodo.org/record/5504008/files/goosynth_train.z05?download=1
+part6: https://zenodo.org/record/5507589/files/goosynth_train.z06?download=1
+part7: https://zenodo.org/record/5511063/files/goosynth_train.z07?download=1
+part8: https://zenodo.org/record/5511688/files/goosynth_train.z08?download=1
+part9: https://zenodo.org/record/5512157/files/goosynth_train.z09?download=1
+
+GOOSynth-Test: https://zenodo.org/record/5515139/files/goosynth_test_v2.zip?download=1
+trainPickleNoSegm: https://zenodo.org/record/5516244/files/goosynth_train_v2_no_segm.pkl?download=1
+testPickleNoSegm: https://zenodo.org/record/5516407/files/goosynth_test_v2_no_segm.pkl?download=1
 
 data_dict = {
     'filename': This is the image name,
