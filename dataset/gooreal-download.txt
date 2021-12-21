@@ -1,19 +1,21 @@
 GOO-real consists of both dense and sparse setups.
 You can download GOO-real in the following link:
 
-ImageData link (5/31/2021): https://zenodo.org/record/5517869/files/gooreal.zip?download=1
-testrealhumans.pickle (5/31/2021): https://zenodo.org/record/5517844/files/testrealhumans.pickle?download=1
-oneshotrealhumans.pickle (5/31/2021): https://zenodo.org/record/5517852/files/oneshotrealhumans.pickle?download=1
-valrealhumans.pickle (5/31/2021): https://zenodo.org/record/5517855/files/valrealhumans.pickle?download=1
-testrealhumansSparsed.pickle (5/31/2021): https://zenodo.org/record/5517861/files/testrealhumansSparsed.pickle?download=1
+ImageData link (5/31/2021): https://zenodo.org/record/5795240/files/gooreal.zip?download=1
+testrealhumans.pickle (5/31/2021): https://zenodo.org/record/5795290/files/testrealhumansNew.pickle?download=1
+oneshotrealhumans.pickle (5/31/2021): https://zenodo.org/record/5795284/files/oneshotrealhumansNew.pickle?download=1
+valrealhumans.pickle (5/31/2021): https://zenodo.org/record/5795283/files/valrealhumansNew.pickle?download=1
+testrealhumansSparsed.pickle (5/31/2021): https://zenodo.org/record/5795279/files/testrealhumansSparsedNew.pickle?download=1
 
-The main directory for dense set GOO-real is "finalrealdatasetImgsV2". Its pickle files are:
+The main directory for dense set GOO-real is "finalrealdatasetImgsV3". Its pickle files are:
 oneshotrealhumans.pickle - used for one-shot training
 testrealhumans.pickle - used for testing
 valrealhumans.pickle - used for validation
 
-The main directory for sparse set GOO-real is "finalrealdatasetImgsV2Sparsed". Its pickle files are:
+The main directory for sparse set GOO-real is "finalrealdatasetImgsV3Sparsed". Its pickle files are:
 testrealhumansSparsed.pickle - used for testing
+
+Update (12/21/2021): Pickle files have "New" name at the end. Rename if you want.
 
 The contents of the pickle files are a list of dictionary objects with length equal to the total number of images. Each dictionary contains the following data:
 
