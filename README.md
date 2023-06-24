@@ -29,8 +29,8 @@ The [dataset](./dataset/) directory contains instructions on how to download GOO
 </br>
 Update (6/14/2023):
 Gaze on Object datasets now available in huggingface <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" width="25" height="25"/>:
-1. <a href="https://huggingface.co/datasets/markytools/goosynthetic">GooSynthetic</a>
-2. <a href="https://huggingface.co/datasets/markytools/gooreal">GooReal</a>
+1. <a href="https://huggingface.co/datasets/markytools/goosyntheticv3">GooSynthetic</a>
+2. <a href="https://huggingface.co/datasets/markytools/goorealv3">GooReal</a>
 
     
 ## gazefollowing
